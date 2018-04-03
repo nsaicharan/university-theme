@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html <?php language_attributes() ?>>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <?php wp_head();?>
 </head>
-<body>
+<body <?php body_class(); ?>>
 
 <header class="site-header">
     <div class="container">
@@ -17,7 +17,7 @@
       <div class="site-header__menu group">
         <nav class="main-navigation">
           <ul>
-            <li><a href="<?php echo site_url('/about-us'); ?>">About Us</a></li>
+            <li <?php echo ( is_page('about-us') || wp_get_post_parent_id(0) == 10) ? 'class="current-menu-item"' : ''; ?>><a href="<?php echo site_url('/about-us'); ?>">About Us</a></li>
             <li><a href="#">Programs</a></li>
             <li><a href="#">Events</a></li>
             <li><a href="#">Campuses</a></li>
