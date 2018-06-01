@@ -56,6 +56,10 @@
     ?>
 
   <?php endwhile; ?>
+
+  <hr class="section-break">
+
+  <p><a href="<?php echo site_url('/events'); ?>"><i class="fa fa-angle-double-left"></i> Back to upcoming events</a> </p>
 </div>
 
 <?php get_footer(); ?>

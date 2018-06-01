@@ -26,6 +26,40 @@
 			<?php the_content(); ?>
 		</div>
 
+		<!-- Program's Professors -->
+		<?php 
+			$professorsQuery = new WP_Query( array(
+				'post_type' => 'professor',
+				'posts_per_page' => -1,
+				'orderby' => 'title',
+				'order' => 'ASC',
+				'meta_query' => array(
+					'key' => 'related_programs',
+					'compare' => 'LIKE',
+					'value' => '"' . get_the_ID(). '"'
+				)
+			) );
+
+			if ( $professorsQuery ) :
+
+		?>
+		<hr class="section-break">
+		<h2 class="headline headline--medium"><?php the_title(); ?> Professor(s)</h2>
+		
+		<ul class="professor-cards">
+		<?php while ( $professorsQuery->have_posts() ) : $professorsQuery->the_post(); ?>
+			<li class="professor-card__list-item">
+				<a class="professor-card"  href="<?php the_permalink(); ?>">
+					<img class="professor-card__image" src="<?php the_post_thumbnail_url('professorLandscape'); ?>">
+					<span class="professor-card__name"><?php the_title(); ?></span>	
+				</a>
+			</li>
+		<?php endwhile; wp_reset_postdata(); ?>	
+		</ul>
+
+		<?php endif; ?>
+
+		<!-- Upcoming events -->
 		<?php 
 			$today = date('Ymd');
 			$eventsQuery = new WP_Query(array(
