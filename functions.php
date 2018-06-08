@@ -42,6 +42,8 @@ function university_files () {
 
     wp_enqueue_style('university_main_styles', get_stylesheet_uri());
 
+    wp_enqueue_script( 'google-map', '//maps.googleapis.com/maps/api/js?key=AIzaSyC4xccdP73-MvfI4yK8CjBL3ET60QI8wwc', null, '1', true );
+
     wp_enqueue_script('main-university-js', get_theme_file_uri('js/scripts-bundled.js'), null, microtime(), true);
 }
 add_action('wp_enqueue_scripts', 'university_files');
@@ -103,6 +105,22 @@ function university_post_types() {
 		),
 		'menu_icon' => 'dashicons-welcome-learn-more'
 	) );
+
+	// Campus
+	register_post_type( 'campus', array (
+		'public' => true,
+		'has_archive' => true,
+		'supports' => array ( 'title', 'editor', 'excerpt' ),
+		'rewrite' => array ( 'slug' => 'campuses' ),
+		'labels' => array (
+			'name' => 'Campuses',
+			'all_items' => 'All Campuses',
+			'add_new_item' => 'Add Campus',
+			'edit_item' => 'Edit Campus',
+			'singular_name' => 'Campus'
+		),
+		'menu_icon' => 'dashicons-location-alt'
+	) );
 }
 add_action('init', 'university_post_types');
 
@@ -128,5 +146,17 @@ function university_adjust_queries($query) {
 		$query->set('orderby', 'title');
 		$query->set('order', 'ASC');
 	}
+
+	// Campuses Archive Page
+	if ( !is_admin() && is_post_type_archive('campus') && $query->is_main_query() ) {
+		$query->set('posts_per_page', -1);
+	}
 }
 add_action('pre_get_posts', 'university_adjust_queries');
+
+
+function universityMapKey($api) {
+	$api['key'] = 'AIzaSyC4xccdP73-MvfI4yK8CjBL3ET60QI8wwc';
+	return $api;
+}
+add_filter( 'acf/fields/google_map/api', 'universityMapKey' );
