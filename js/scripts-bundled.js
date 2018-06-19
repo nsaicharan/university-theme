@@ -13663,10 +13663,12 @@ function () {
     value: function getResults() {
       var _this = this;
 
-      _jquery.default.getJSON("".concat(universityData.root_url, "/wp-json/wp/v2/posts?search=").concat(this.searchField.val()), function (posts) {
-        _this.resultsDiv.html("\n\t\t\t\t<h2 class=\"search-overlay__section-title\">Search Results</h2>\n\t\t\t\t".concat(posts.length ? '<ul class="link-list min-list">' : "<p>No matching information available.</p>", "\n\t\t\t\t\t").concat(posts.map(function (post) {
-          return "<li><a href=\"".concat(post.link, "\">").concat(post.title.rendered, "</a></li>");
-        }).join(''), "\n\t\t\t\t").concat(posts.length ? "</ul>" : '', "\n\t\t\t"));
+      _jquery.default.when(_jquery.default.getJSON("".concat(universityData.root_url, "/wp-json/wp/v2/posts?search=").concat(this.searchField.val())), _jquery.default.getJSON("".concat(universityData.root_url, "/wp-json/wp/v2/pages?search=").concat(this.searchField.val()))).then(function (posts, pages) {
+        var combinedResults = posts[0].concat(pages[0]);
+
+        _this.resultsDiv.html("\n\t\t\t\t<h2 class=\"search-overlay__section-title\">Search Results</h2>\n\t\t\t\t".concat(combinedResults.length ? '<ul class="link-list min-list">' : "<p>No matching information available.</p>", "\n\t\t\t\t\t").concat(combinedResults.map(function (item) {
+          return "<li><a href=\"".concat(item.link, "\">").concat(item.title.rendered, "</a></li>");
+        }).join(''), "\n\t\t\t\t").concat(combinedResults.length ? "</ul>" : '', "\n\t\t\t"));
 
         _this.isSpinnerVisible = false;
       });
@@ -13705,7 +13707,7 @@ function () {
   }, {
     key: "addSearchHTML",
     value: function addSearchHTML() {
-      (0, _jquery.default)("body").append("\n\t\t\t<div class=\"search-overlay\">\n\t\t\t\t<div class=\"search-overlay__top\">\n\t\t\t\t<div class=\"container\">\n\t\t\t\t\t<i class=\"fa fa-search search-overlay__icon\" aria-hidden=\"true\"></i>\n\t\t\t\n\t\t\t\t\t<input type=\"text\" class=\"search-term\" id=\"search-term\" placeholder=\"What are you looking for?\">\n\t\t\t\n\t\t\t\t\t<i class=\"fa fa-window-close search-overlay__close\" aria-hidden=\"true\"></i>\n\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\n\t\t\t\t<div class=\"container\">\n\t\t\t\t<div id=\"search-overlay__results\">\n\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t");
+      (0, _jquery.default)("body").append("\n\t\t\t<div class=\"search-overlay\">\n\t\t\t\t<div class=\"search-overlay__top\">\n\t\t\t\t<div class=\"container\">\n\t\t\t\t\t<i class=\"fa fa-search search-overlay__icon\" aria-hidden=\"true\"></i>\n\t\t\t\t\n\t\t\t\t\t<input type=\"text\" class=\"search-term\" id=\"search-term\" placeholder=\"What are you looking for?\">\n\t\t\t\n\t\t\t\t\t<i class=\"fa fa-window-close search-overlay__close\" aria-hidden=\"true\"></i>\n\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\n\t\t\t\t<div class=\"container\">\n\t\t\t\t<div id=\"search-overlay__results\">\n\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t");
     }
   }]);
 

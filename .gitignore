@@ -4,5 +4,6 @@ prepros.cfg
 prepros-6.config
 
 node_modules
+.vscode
 
 notes.txt
