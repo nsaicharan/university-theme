@@ -1,5 +1,6 @@
-
 <?php 
+
+require get_theme_file_path('/inc/search-route.php');
 
 // Page Banner
 function pageBanner($args = NULL) {
@@ -164,3 +165,13 @@ function universityMapKey($api) {
 	return $api;
 }
 add_filter( 'acf/fields/google_map/api', 'universityMapKey' );
+
+
+function university_custom_rest() {
+	register_rest_field( 'post', 'authorName', array(
+		'get_callback' => function() {
+			return get_the_author();
+		}
+	) );
+} 
+add_action( 'rest_api_init', 'university_custom_rest' );
