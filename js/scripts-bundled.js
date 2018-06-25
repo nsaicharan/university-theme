@@ -13663,12 +13663,18 @@ function () {
     value: function getResults() {
       var _this = this;
 
-      _jquery.default.when(_jquery.default.getJSON("".concat(universityData.root_url, "/wp-json/wp/v2/posts?search=").concat(this.searchField.val())), _jquery.default.getJSON("".concat(universityData.root_url, "/wp-json/wp/v2/pages?search=").concat(this.searchField.val()))).then(function (posts, pages) {
-        var combinedResults = posts[0].concat(pages[0]);
-
-        _this.resultsDiv.html("\n\t\t\t\t<h2 class=\"search-overlay__section-title\">Search Results</h2>\n\t\t\t\t".concat(combinedResults.length ? '<ul class="link-list min-list">' : "<p>No matching information available.</p>", "\n\t\t\t\t\t").concat(combinedResults.map(function (item) {
-          return "<li><a href=\"".concat(item.link, "\">").concat(item.title.rendered, "</a> ").concat(item.type == 'post' ? "by ".concat(item.authorName) : '', "</li>");
-        }).join(''), "\n\t\t\t\t").concat(combinedResults.length ? "</ul>" : '', "\n\t\t\t"));
+      _jquery.default.getJSON("".concat(universityData.root_url, "/wp-json/unirest/v1/search?term=").concat(this.searchField.val()), function (results) {
+        _this.resultsDiv.html("\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"one-third\">\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">General Information</h2>\n\t\t\t\t\t\t".concat(results.generalInfo.length ? '<ul class="link-list min-list">' : "<p>No matching information available.</p>", "\n\t\t\t\t\t\t\t").concat(results.generalInfo.map(function (item) {
+          return "\n\t\t\t\t\t\t\t\t<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a> ").concat(item.postType == 'post' ? "by ".concat(item.authorName) : '', "</li>\n\t\t\t\t\t\t\t");
+        }).join(''), "\n\t\t\t\t\t\t").concat(results.generalInfo.length ? "</ul>" : '', "\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- End one-third -->\n\n\t\t\t\t\t<div class=\"one-third\">\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Programs</h2>\n\t\t\t\t\t\t").concat(results.programs.length ? '<ul class="link-list min-list">' : "<p>No programs match that search. View <a href=\"".concat(universityData.root_url, "/programs\">all programs</a>.</p>"), "\n\t\t\t\t\t\t\t").concat(results.programs.map(function (item) {
+          return "\n\t\t\t\t\t\t\t\t<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a></li>\n\t\t\t\t\t\t\t");
+        }).join(''), "\n\t\t\t\t\t\t").concat(results.programs.length ? "</ul>" : '', "\n\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Professors</h2>\n\t\t\t\t\t\t").concat(results.professors.length ? '<ul class="professor-cards">' : "<p>No professors match that search.</p>", "\n\t\t\t\t\t\t\t").concat(results.professors.map(function (item) {
+          return "\n\t\t\t\t\t\t\t\t<li class=\"professor-card__list-item\">\n\t\t\t\t\t\t\t\t\t<a class=\"professor-card\"  href=\"".concat(item.permalink, "\">\n\t\t\t\t\t\t\t\t\t\t<img class=\"professor-card__image\" src=\"").concat(item.image, "\">\n\t\t\t\t\t\t\t\t\t\t<span class=\"professor-card__name\">").concat(item.title, "</span>\t\n\t\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t");
+        }).join(''), "\n\t\t\t\t\t\t").concat(results.professors.length ? "</ul>" : '', "\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- End one-third -->\n\n\t\t\t\t\t<div class=\"one-third\">\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Campuses</h2>\n\t\t\t\t\t\t").concat(results.campuses.length ? '<ul class="link-list min-list">' : "<p>No campuses match that search. View <a href=\"".concat(universityData.root_url, "/campuses\">all campuses</a>.</p>"), "\n\t\t\t\t\t\t\t").concat(results.campuses.map(function (item) {
+          return "\n\t\t\t\t\t\t\t\t<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a></li>\n\t\t\t\t\t\t\t");
+        }).join(''), "\n\t\t\t\t\t\t").concat(results.campuses.length ? "</ul>" : '', "\n\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Events</h2>\n\t\t\t\t\t\t").concat(results.events.map(function (item) {
+          return "\n\t\t\t\t\t\t\t<div class=\"event-summary\">\n\t\t\t\t\t\t\t\t<a class=\"event-summary__date t-center\" href=\"".concat(item.permalink, "\">\n\t\t\t\t\t\t\t\t\t<span class=\"event-summary__month\">").concat(item.month, "</span>\n\t\t\t\t\t\t\t\t\t<span class=\"event-summary__day\">").concat(item.date, "</span>  \n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t<div class=\"event-summary__content\">\n\t\t\t\t\t\t\t\t\t<h5 class=\"event-summary__title headline headline--tiny\"><a href=\"").concat(item.permalink, "\">").concat(item.title, "</a></h5>\n\t\t\t\t\t\t\t\t\t<p>").concat(item.excerpt, " <a href=\"").concat(item.permalink, "\" class=\"nu gray\">Learn more</a>.</p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t");
+        }).join(''), "\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- End one-third -->\n\n\t\t\t\t</div>\n\t\t\t\t<!-- End row -->\n\t\t\t"));
 
         _this.isSpinnerVisible = false;
       });
@@ -13707,7 +13713,7 @@ function () {
   }, {
     key: "addSearchHTML",
     value: function addSearchHTML() {
-      (0, _jquery.default)("body").append("\n\t\t\t<div class=\"search-overlay\">\n\t\t\t\t<div class=\"search-overlay__top\">\n\t\t\t\t<div class=\"container\">\n\t\t\t\t\t<i class=\"fa fa-search search-overlay__icon\" aria-hidden=\"true\"></i>\n\t\t\t\t\n\t\t\t\t\t<input type=\"text\" class=\"search-term\" id=\"search-term\" placeholder=\"What are you looking for?\">\n\t\t\t\n\t\t\t\t\t<i class=\"fa fa-window-close search-overlay__close\" aria-hidden=\"true\"></i>\n\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\n\t\t\t\t<div class=\"container\">\n\t\t\t\t<div id=\"search-overlay__results\">\n\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t");
+      (0, _jquery.default)("body").append("\n\t\t\t<div class=\"search-overlay\">\n\t\t\t\t<div class=\"search-overlay__top\">\n\t\t\t\t\t<div class=\"container\">\n\t\t\t\t\t\t<i class=\"fa fa-search search-overlay__icon\" aria-hidden=\"true\"></i>\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t<input type=\"text\" class=\"search-term\" id=\"search-term\" placeholder=\"What are you looking for?\">\n\n\t\t\t\t\t\t<i class=\"fa fa-window-close search-overlay__close\" aria-hidden=\"true\"></i>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t\n\t\t\t\t<div class=\"container\">\n\t\t\t\t\t<div id=\"search-overlay__results\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t");
     }
   }]);
 

@@ -17,7 +17,7 @@
 		</div>
 		
 		<div class="generic-content">
-			<?php the_content(); ?>
+			<?php the_field('program_body_content'); //Used custom field instead of the_content() to issues in live search ?>
 		</div>
 
 		<!-- Program's Professors -->
@@ -28,13 +28,15 @@
 				'orderby' => 'title',
 				'order' => 'ASC',
 				'meta_query' => array(
-					'key' => 'related_programs',
-					'compare' => 'LIKE',
-					'value' => '"' . get_the_ID(). '"'
+					array(
+						'key' => 'related_programs',
+						'compare' => 'LIKE',
+						'value' => '"' . get_the_ID(). '"'
+					)
 				)
 			) );
 
-			if ( $professorsQuery ) :
+			if ( $professorsQuery->have_posts() ) :
 
 		?>
 		<hr class="section-break">
@@ -82,7 +84,6 @@
 		?>
 
 		<hr class="section-break">
-		  
 		<h2 class="headline headline--medium">Upcoming <?php the_title(); ?> Events</h2>
 
 		<?php 
@@ -93,8 +94,24 @@
 			get_template_part( 'template-parts/content', 'event' );
 		?>
 
-		<?php endwhile; endif; ?>
+		<?php endwhile; endif; wp_reset_postdata(); ?>
+		
+		<?php 
+			$relatedCampuses = get_field('related_campus');
+			if ( $relatedCampuses ) :
+		?>
+		<hr class="section-break">
+		<h2 class="headline headline--medium"><?php the_title(); ?> is available at these campuses:</h2>
+
+		<ul class="link-list min-list">
+		<?php foreach ( $relatedCampuses as $campus ) : ?>
+			<li><a href="<?php echo get_the_permalink( $campus ); ?>"><?php echo get_the_title( $campus ); ?></a></li>
+		<?php endforeach; ?>
+		</ul>
+		<?php endif; ?>
+
 	</div>
+	<!-- container -->
 <?php endwhile; ?>
 
 <?php get_footer() ?>
