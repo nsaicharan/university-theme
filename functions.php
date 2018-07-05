@@ -46,7 +46,7 @@ function university_files () {
     wp_enqueue_script( 'google-map', '//maps.googleapis.com/maps/api/js?key=AIzaSyC4xccdP73-MvfI4yK8CjBL3ET60QI8wwc', null, '1', true );
 
 	wp_enqueue_script('main-university-js', get_theme_file_uri('js/scripts-bundled.js'), null, microtime(), true);
-	
+
 	wp_localize_script( 'main-university-js', 'universityData', array(
 		'root_url' => get_site_url()
 	) );
@@ -67,6 +67,8 @@ add_action('after_setup_theme', 'university_features');
 function university_post_types() {
 	// Event
 	register_post_type( 'event', array(
+		'capability_type' => 'event',
+		'map_meta_cap' => true,
 		'supports' => array( 'title', 'editor', 'excerpt' ),
 		'rewrite' => array( 'slug' => 'events' ),
 		'has_archive' => true,
@@ -113,6 +115,8 @@ function university_post_types() {
 
 	// Campus
 	register_post_type( 'campus', array (
+		'capability_type' => 'campus',
+		'map_meta_cap' => true,
 		'public' => true,
 		'has_archive' => true,
 		'supports' => array ( 'title', 'editor', 'excerpt' ),
@@ -175,3 +179,41 @@ function university_custom_rest() {
 	) );
 } 
 add_action( 'rest_api_init', 'university_custom_rest' );
+
+// Redirect subscribers to homepage when they login
+function redirectSubscribers() {
+	$user = wp_get_current_user();
+
+	if ( count($user->roles) == 1 && $user->roles[0] == 'subscriber' ) {
+		wp_redirect( site_url('/') );
+		exit;
+	}
+}
+add_action( 'admin_init', 'redirectSubscribers' );
+
+// Remove WP Admin bar for subscribers
+function noSubsAdminBar() {
+	$user = wp_get_current_user();
+
+	if ( count($user->roles) == 1 && $user->roles[0] == 'subscriber' ) {
+		show_admin_bar( false );
+	}
+}
+add_action( 'wp_loaded', 'noSubsAdminBar' );
+
+// Change the URL of login screen
+function ourHeaderUrl() {
+	return esc_url( site_url( '/' ) );
+}
+add_filter( 'login_headerurl', 'ourHeaderUrl' ); 
+
+function ourHeaderTitle() {
+	return get_bloginfo('name');
+}
+add_filter( 'login_headertitle', 'ourHeaderTitle' );
+
+function ourLoginCSS() {
+	wp_enqueue_style('roboto', 'https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i" rel="stylesheet');
+	wp_enqueue_style('university_main_styles', get_stylesheet_uri());
+}
+add_action( 'login_enqueue_scripts', 'ourLoginCSS' );
