@@ -37,7 +37,7 @@ function pageBanner($args = NULL) {
 
 <?php
 
-function university_files () {
+function university_files() {
     wp_enqueue_style('font-awesome', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
     wp_enqueue_style('roboto', 'https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i" rel="stylesheet');
 
@@ -48,7 +48,8 @@ function university_files () {
 	wp_enqueue_script('main-university-js', get_theme_file_uri('js/scripts-bundled.js'), null, microtime(), true);
 
 	wp_localize_script( 'main-university-js', 'universityData', array(
-		'root_url' => get_site_url()
+		'root_url' => get_site_url(),
+		'nonce' => wp_create_nonce( 'wp_rest' )
 	) );
 }
 add_action('wp_enqueue_scripts', 'university_files');
@@ -129,6 +130,25 @@ function university_post_types() {
 			'singular_name' => 'Campus'
 		),
 		'menu_icon' => 'dashicons-location-alt'
+	) );
+
+	// Note 
+	register_post_type( 'note', array(
+		'capability_type' => 'note',
+		'map_meta_cap' => true,
+		'show_in_rest' => true,
+		'supports' => array( 'title', 'editor' ),
+		'rewrite' => array( 'slug' => 'programs' ),
+		'public' => false,
+		'show_ui' => true, // Show in admin dashboard
+		'labels' => array(
+			'name' => 'Notes',
+			'add_new_item' => 'Add New Note',
+			'edit_item' => 'Edit Note',
+			'all_items' => 'All Notes',
+			'singular_name' => 'Note'
+		),
+		'menu_icon' => 'dashicons-welcome-write-blog'
 	) );
 }
 add_action('init', 'university_post_types');
