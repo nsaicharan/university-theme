@@ -13830,7 +13830,8 @@ function () {
       var newPost = {
         title: (0, _jquery.default)(".new-note-title").val(),
         content: (0, _jquery.default)(".new-note-body").val(),
-        status: "publish"
+        status: "publish" // Forced it to be private in functions.php, so even though the status is set to 'publish', it'll be converted into private
+
       };
 
       _jquery.default.ajax({
