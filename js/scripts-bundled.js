@@ -13848,6 +13848,10 @@ function () {
         },
         error: function error(err) {
           console.log(err);
+
+          if (err.responseText.includes("You have reached your note limit.")) {
+            (0, _jquery.default)(".note-limit-message").addClass("active");
+          }
         }
       });
     }
@@ -13863,8 +13867,12 @@ function () {
         },
         url: universityData.root_url + "/wp-json/wp/v2/note/" + noteID,
         type: "DELETE",
-        success: function success(data) {
+        success: function success(response) {
           note.slideUp();
+
+          if (response.userNoteCount <= 10) {
+            (0, _jquery.default)(".note-limit-message").removeClass("active");
+          }
         },
         error: function error(err) {
           console.log(err);

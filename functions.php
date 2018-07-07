@@ -197,6 +197,12 @@ function university_custom_rest() {
 			return get_the_author();
 		}
 	) );
+
+	register_rest_field( 'note', 'userNoteCount', array(
+		'get_callback' => function() {
+			return count_user_posts( get_current_user_id(), 'note' );
+		}
+	) );
 } 
 add_action( 'rest_api_init', 'university_custom_rest' );
 
@@ -239,10 +245,15 @@ function ourLoginCSS() {
 add_action( 'login_enqueue_scripts', 'ourLoginCSS' );
 
 // Force notes to be private
-function makeNotePrivate($data) {
+function makeNotePrivate($data, $postarr) {
 	if ( $data['post_type'] == 'note' ) {
 		$data['post_title'] = sanitize_text_field( $data['post_title'] );
 		$data['post_content'] = sanitize_textarea_field( $data['post_content'] );
+
+		// Set limit to user notes
+		if ( count_user_posts( get_current_user_id(), 'note' ) > 10 && !$postarr['ID'] ) {
+			die("You have reached your note limit.");
+		}
 	}
 
 	if ( $data['post_type'] == 'note' && $data['post_status'] != 'trash' ) {
@@ -251,4 +262,5 @@ function makeNotePrivate($data) {
 
 	return $data;
 }
-add_filter( 'wp_insert_post_data', 'makeNotePrivate' );
+add_filter( 'wp_insert_post_data', 'makeNotePrivate', 10, 2 ); 
+// Here 2 is the no. of parameters that can used in the function and is the 10 priority the function (in case if we use two separate function for the filter)
