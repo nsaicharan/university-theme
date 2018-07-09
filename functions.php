@@ -1,5 +1,6 @@
 <?php 
 
+require get_theme_file_path('/inc/like-route.php');
 require get_theme_file_path('/inc/search-route.php');
 
 // Page Banner
@@ -149,6 +150,21 @@ function university_post_types() {
 			'singular_name' => 'Note'
 		),
 		'menu_icon' => 'dashicons-welcome-write-blog'
+	) );
+
+	register_post_type( 'like', array( 
+		'supports' => array( 'title' ),
+		'public' => false,
+		'post_type' => 'like',
+		'show_ui' => true,
+		'labels' => array(
+			'name' => 'Likes',
+			'add_new_item' => 'Add New Like',
+			'edit_item' => 'Edit Like',
+			'all_items' => 'All Likes',
+			'singular_name' => 'Like'
+		),
+		'menu_icon' => 'dashicons-heart'
 	) );
 }
 add_action('init', 'university_post_types');

@@ -10344,6 +10344,8 @@ var _Search = _interopRequireDefault(__webpack_require__(6));
 
 var _MyNotes = _interopRequireDefault(__webpack_require__(7));
 
+var _Like = _interopRequireDefault(__webpack_require__(8));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // 3rd party packages from NPM
@@ -10354,6 +10356,7 @@ var heroSlider = new _HeroSlider.default();
 var googleMap = new _GoogleMap.default();
 var search = new _Search.default();
 var myNotes = new _MyNotes.default();
+var like = new _Like.default();
 
 /***/ }),
 /* 2 */
@@ -13634,10 +13637,10 @@ function () {
   _createClass(Search, [{
     key: "events",
     value: function events() {
-      this.openButton.on('click', this.openOverlay.bind(this));
-      this.closeButton.on('click', this.closeOverlay.bind(this));
-      (0, _jquery.default)(document).on('keydown', this.keyPressDispatcher.bind(this));
-      this.searchField.on('keyup', this.typingLogic.bind(this));
+      this.openButton.on("click", this.openOverlay.bind(this));
+      this.closeButton.on("click", this.closeOverlay.bind(this));
+      (0, _jquery.default)(document).on("keydown", this.keyPressDispatcher.bind(this));
+      this.searchField.on("keyup", this.typingLogic.bind(this));
     } // Methods
 
   }, {
@@ -13668,16 +13671,16 @@ function () {
 
       _jquery.default.getJSON("".concat(universityData.root_url, "/wp-json/unirest/v1/search?term=").concat(this.searchField.val()), function (results) {
         _this.resultsDiv.html("\n\t\t\t\t<div class=\"row\">\n\t\t\t\t\t<div class=\"one-third\">\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">General Information</h2>\n\t\t\t\t\t\t".concat(results.generalInfo.length ? '<ul class="link-list min-list">' : "<p>No matching information available.</p>", "\n\t\t\t\t\t\t\t").concat(results.generalInfo.map(function (item) {
-          return "\n\t\t\t\t\t\t\t\t<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a> ").concat(item.postType == 'post' ? "by ".concat(item.authorName) : '', "</li>\n\t\t\t\t\t\t\t");
-        }).join(''), "\n\t\t\t\t\t\t").concat(results.generalInfo.length ? "</ul>" : '', "\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- End one-third -->\n\n\t\t\t\t\t<div class=\"one-third\">\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Programs</h2>\n\t\t\t\t\t\t").concat(results.programs.length ? '<ul class="link-list min-list">' : "<p>No programs match that search. View <a href=\"".concat(universityData.root_url, "/programs\">all programs</a>.</p>"), "\n\t\t\t\t\t\t\t").concat(results.programs.map(function (item) {
+          return "\n\t\t\t\t\t\t\t\t<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a> ").concat(item.postType == "post" ? "by ".concat(item.authorName) : "", "</li>\n\t\t\t\t\t\t\t");
+        }).join(""), "\n\t\t\t\t\t\t").concat(results.generalInfo.length ? "</ul>" : "", "\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- End one-third -->\n\n\t\t\t\t\t<div class=\"one-third\">\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Programs</h2>\n\t\t\t\t\t\t").concat(results.programs.length ? '<ul class="link-list min-list">' : "<p>No programs match that search. View <a href=\"".concat(universityData.root_url, "/programs\">all programs</a>.</p>"), "\n\t\t\t\t\t\t\t").concat(results.programs.map(function (item) {
           return "\n\t\t\t\t\t\t\t\t<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a></li>\n\t\t\t\t\t\t\t");
-        }).join(''), "\n\t\t\t\t\t\t").concat(results.programs.length ? "</ul>" : '', "\n\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Professors</h2>\n\t\t\t\t\t\t").concat(results.professors.length ? '<ul class="professor-cards">' : "<p>No professors match that search.</p>", "\n\t\t\t\t\t\t\t").concat(results.professors.map(function (item) {
+        }).join(""), "\n\t\t\t\t\t\t").concat(results.programs.length ? "</ul>" : "", "\n\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Professors</h2>\n\t\t\t\t\t\t").concat(results.professors.length ? '<ul class="professor-cards">' : "<p>No professors match that search.</p>", "\n\t\t\t\t\t\t\t").concat(results.professors.map(function (item) {
           return "\n\t\t\t\t\t\t\t\t<li class=\"professor-card__list-item\">\n\t\t\t\t\t\t\t\t\t<a class=\"professor-card\"  href=\"".concat(item.permalink, "\">\n\t\t\t\t\t\t\t\t\t\t<img class=\"professor-card__image\" src=\"").concat(item.image, "\">\n\t\t\t\t\t\t\t\t\t\t<span class=\"professor-card__name\">").concat(item.title, "</span>\t\n\t\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t</li>\n\t\t\t\t\t\t\t");
-        }).join(''), "\n\t\t\t\t\t\t").concat(results.professors.length ? "</ul>" : '', "\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- End one-third -->\n\n\t\t\t\t\t<div class=\"one-third\">\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Campuses</h2>\n\t\t\t\t\t\t").concat(results.campuses.length ? '<ul class="link-list min-list">' : "<p>No campuses match that search. View <a href=\"".concat(universityData.root_url, "/campuses\">all campuses</a>.</p>"), "\n\t\t\t\t\t\t\t").concat(results.campuses.map(function (item) {
+        }).join(""), "\n\t\t\t\t\t\t").concat(results.professors.length ? "</ul>" : "", "\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- End one-third -->\n\n\t\t\t\t\t<div class=\"one-third\">\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Campuses</h2>\n\t\t\t\t\t\t").concat(results.campuses.length ? '<ul class="link-list min-list">' : "<p>No campuses match that search. View <a href=\"".concat(universityData.root_url, "/campuses\">all campuses</a>.</p>"), "\n\t\t\t\t\t\t\t").concat(results.campuses.map(function (item) {
           return "\n\t\t\t\t\t\t\t\t<li><a href=\"".concat(item.permalink, "\">").concat(item.title, "</a></li>\n\t\t\t\t\t\t\t");
-        }).join(''), "\n\t\t\t\t\t\t").concat(results.campuses.length ? "</ul>" : '', "\n\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Events</h2>\n\t\t\t\t\t\t").concat(results.events.map(function (item) {
+        }).join(""), "\n\t\t\t\t\t\t").concat(results.campuses.length ? "</ul>" : "", "\n\n\t\t\t\t\t\t<h2 class=\"search-overlay__section-title\">Events</h2>\n\t\t\t\t\t\t").concat(results.events.map(function (item) {
           return "\n\t\t\t\t\t\t\t<div class=\"event-summary\">\n\t\t\t\t\t\t\t\t<a class=\"event-summary__date t-center\" href=\"".concat(item.permalink, "\">\n\t\t\t\t\t\t\t\t\t<span class=\"event-summary__month\">").concat(item.month, "</span>\n\t\t\t\t\t\t\t\t\t<span class=\"event-summary__day\">").concat(item.date, "</span>  \n\t\t\t\t\t\t\t\t</a>\n\t\t\t\t\t\t\t\t<div class=\"event-summary__content\">\n\t\t\t\t\t\t\t\t\t<h5 class=\"event-summary__title headline headline--tiny\"><a href=\"").concat(item.permalink, "\">").concat(item.title, "</a></h5>\n\t\t\t\t\t\t\t\t\t<p>").concat(item.excerpt, " <a href=\"").concat(item.permalink, "\" class=\"nu gray\">Learn more</a>.</p>\n\t\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t");
-        }).join(''), "\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- End one-third -->\n\n\t\t\t\t</div>\n\t\t\t\t<!-- End row -->\n\t\t\t"));
+        }).join(""), "\n\t\t\t\t\t</div>\n\t\t\t\t\t<!-- End one-third -->\n\n\t\t\t\t</div>\n\t\t\t\t<!-- End row -->\n\t\t\t"));
 
         _this.isSpinnerVisible = false;
       });
@@ -13685,7 +13688,7 @@ function () {
   }, {
     key: "keyPressDispatcher",
     value: function keyPressDispatcher(e) {
-      if (e.keyCode == 83 && !this.isOverlayOpen && !(0, _jquery.default)("input, textarea").is(':focus')) {
+      if (e.keyCode == 83 && !this.isOverlayOpen && !(0, _jquery.default)("input, textarea").is(":focus")) {
         this.openOverlay();
       }
 
@@ -13700,7 +13703,7 @@ function () {
 
       this.searchOverlay.addClass("search-overlay--active");
       (0, _jquery.default)("body").addClass("body-no-scroll");
-      this.searchField.val('');
+      this.searchField.val("");
       setTimeout(function () {
         _this2.searchField.focus();
       }, 301);
@@ -13885,6 +13888,112 @@ function () {
 }();
 
 var _default = MyNotes;
+exports.default = _default;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _jquery = _interopRequireDefault(__webpack_require__(0));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Like =
+/*#__PURE__*/
+function () {
+  function Like() {
+    _classCallCheck(this, Like);
+
+    this.events();
+  }
+
+  _createClass(Like, [{
+    key: "events",
+    value: function events() {
+      (0, _jquery.default)(".like-box").on("click", this.clickDispatcher.bind(this));
+    } // Methods
+
+  }, {
+    key: "clickDispatcher",
+    value: function clickDispatcher(e) {
+      var currentLikeBox = (0, _jquery.default)(e.target).closest(".like-box");
+
+      if (currentLikeBox.attr("data-exists") == "yes") {
+        this.deleteLike(currentLikeBox);
+      } else {
+        this.createLike(currentLikeBox);
+      }
+    }
+  }, {
+    key: "createLike",
+    value: function createLike(currentLikeBox) {
+      _jquery.default.ajax({
+        beforeSend: function beforeSend(xhr) {
+          xhr.setRequestHeader("X-WP-Nonce", universityData.nonce);
+        },
+        url: universityData.root_url + "/wp-json/uni/v1/manageLike",
+        type: "POST",
+        data: {
+          professorID: currentLikeBox.data("professor")
+        },
+        success: function success(response) {
+          currentLikeBox.attr("data-exists", "yes");
+          var likeCount = Number(currentLikeBox.find(".like-count").html());
+          likeCount++;
+          currentLikeBox.find(".like-count").html(likeCount);
+          currentLikeBox.attr("data-like", response);
+          console.log(response);
+        },
+        error: function error(err) {
+          console.log(err);
+        }
+      });
+    }
+  }, {
+    key: "deleteLike",
+    value: function deleteLike(currentLikeBox) {
+      _jquery.default.ajax({
+        beforeSend: function beforeSend(xhr) {
+          xhr.setRequestHeader("X-WP-Nonce", universityData.nonce);
+        },
+        url: universityData.root_url + "/wp-json/uni/v1/manageLike",
+        type: "DELETE",
+        data: {
+          like: currentLikeBox.attr("data-like")
+        },
+        success: function success(response) {
+          currentLikeBox.attr("data-exists", "no");
+          var likeCount = Number(currentLikeBox.find(".like-count").html());
+          likeCount--;
+          currentLikeBox.find(".like-count").html(likeCount);
+          currentLikeBox.attr("data-like", "");
+          console.log(response);
+        },
+        error: function error(err) {
+          console.log(err);
+        }
+      });
+    }
+  }]);
+
+  return Like;
+}();
+
+var _default = Like;
 exports.default = _default;
 
 /***/ })
